@@ -1,0 +1,22 @@
+{
+  "name": "study-notes-app",
+  "version": "1.0.0",
+  "description": "Smart Study Notes Manager - Dev Weekends Fellowship 2026 Assessment Stage",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "study",
+    "notes",
+    "manager",
+    "sqlite",
+    "express"
+  ],
+  "author": "Dev Fellow",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7"
+  }
+}

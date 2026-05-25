@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Study Notes Manager</title>
+  
+  <!-- Modern Typography (Inter & Outfit) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome for Premium Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Toast Notification System -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Main App Container -->
+  <div class="app-container">
+    
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-logo">
+        <div class="logo-icon">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="logo-text">
+          <h1>SmartStudy</h1>
+          <span>Notes Manager</span>
+        </div>
+      </div>
+      
+      <!-- Live Search Bar -->
+      <div class="search-wrapper">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="search-input" placeholder="Search notes by title or content..." autocomplete="off">
+        <button id="clear-search" class="clear-search-btn" title="Clear Search">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Quick Actions (Theme toggle) -->
+      <div class="header-actions">
+        <button id="theme-toggle" class="action-btn" title="Toggle Light/Dark Mode">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Grid Layout -->
+    <main class="dashboard-grid">
+      
+      <!-- Left Column: Notes Creator Form -->
+      <aside class="sidebar-section">
+        <div class="glass-card form-card">
+          <div class="form-header">
+            <h2 id="form-title"><i class="fa-solid fa-file-pen"></i> Create New Note</h2>
+            <button id="cancel-edit-btn" class="cancel-edit-btn" style="display: none;" title="Cancel editing">
+              Cancel Edit
+            </button>
+          </div>
+          
+          <form id="note-form" novalidate>
+            <!-- Hidden ID for Editing Mode -->
+            <input type="hidden" id="note-id">
+
+            <div class="form-group">
+              <label for="note-title">Title</label>
+              <input type="text" id="note-title" placeholder="e.g. Biology Exam Summary" required maxlength="100">
+              <span class="error-msg" id="title-error">Title is required</span>
+            </div>
+
+            <div class="form-group">
+              <label for="note-category">Category</label>
+              <select id="note-category">
+                <option value="Study">📚 Study</option>
+                <option value="Work">💼 Work</option>
+                <option value="Personal">🏡 Personal</option>
+                <option value="Ideas">💡 Ideas</option>
+                <option value="General" selected>📝 General</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="note-content">Content</label>
+              <textarea id="note-content" placeholder="Write your notes here... supporting multi-line explanations" required rows="6"></textarea>
+              <span class="error-msg" id="content-error">Content is required</span>
+            </div>
+
+            <div class="form-group row-group">
+              <label class="checkbox-container">
+                <input type="checkbox" id="note-pinned">
+                <span class="checkmark"></span>
+                <span class="checkbox-label"><i class="fa-solid fa-thumbtack"></i> Pin this note to top</span>
+              </label>
+              <div id="char-counter" class="char-counter">0 characters</div>
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn btn-primary">
+              <span class="btn-text">Save Note</span>
+              <i class="fa-solid fa-floppy-disk"></i>
+            </button>
+          </form>
+        </div>
+      </aside>
+
+      <!-- Right Column: Interactive Notes Workspace -->
+      <section class="content-section">
+        
+        <!-- Filter and View Controls -->
+        <div class="controls-bar glass-card">
+          <!-- Category Filters -->
+          <div class="category-filters" id="category-filters-container">
+            <button class="filter-badge active" data-category="all">All Notes</button>
+            <button class="filter-badge" data-category="Study">📚 Study</button>
+            <button class="filter-badge" data-category="Work">💼 Work</button>
+            <button class="filter-badge" data-category="Personal">🏡 Personal</button>
+            <button class="filter-badge" data-category="Ideas">💡 Ideas</button>
+            <button class="filter-badge" data-category="General">📝 General</button>
+          </div>
+          
+          <!-- Grid/List View Toggles -->
+          <div class="view-toggles">
+            <button id="view-grid" class="view-btn active" title="Grid View">
+              <i class="fa-solid fa-grip"></i>
+            </button>
+            <button id="view-list" class="view-btn" title="List View">
+              <i class="fa-solid fa-list"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Dynamic Notes Display Area -->
+        <div class="notes-workspace">
+          
+          <!-- Pinned Notes Container -->
+          <div id="pinned-section-wrapper" class="notes-section" style="display: none;">
+            <div class="section-title">
+              <h3><i class="fa-solid fa-thumbtack"></i> Pinned Notes</h3>
+              <div class="section-divider"></div>
+            </div>
+            <div id="pinned-notes-grid" class="notes-grid grid-layout"></div>
+          </div>
+
+          <!-- All Notes Container -->
+          <div class="notes-section">
+            <div class="section-title">
+              <h3 id="all-notes-heading">All Notes</h3>
+              <div class="section-divider"></div>
+            </div>
+            
+            <!-- Loader State -->
+            <div id="notes-loader" class="loader-container">
+              <div class="spinner"></div>
+              <p>Loading your study space...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state-container" style="display: none;">
+              <div class="empty-icon">
+                <i class="fa-regular fa-note-sticky"></i>
+              </div>
+              <h4>No notes found</h4>
+              <p id="empty-state-text">Create your first study note to get started!</p>
+            </div>
+
+            <!-- Primary Grid -->
+            <div id="all-notes-grid" class="notes-grid grid-layout"></div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Smart Study Notes Manager &bull; Dev Weekends Fellowship 2026</p>
+    </footer>
+
+  </div>
+
+  <!-- Custom JS Script -->
+  <script src="script.js"></script>
+</body>
+</html>
