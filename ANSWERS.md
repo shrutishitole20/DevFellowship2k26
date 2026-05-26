@@ -49,7 +49,7 @@ For this task, I implemented the application using a classic **PERN/MERN-equival
 ## 3. One Real Edge Case
 
 ### Cross-Site Scripting (XSS) Mitigation in Dynamic DOM Rendering
-*   **File**: `public/script.js`
+*   **File**: `frontend/js/main.js`
 *   **Line Numbers**: `485 - 500` (within the `escapeHTML` helper function) and used on lines `418 - 419` inside the rendering loop.
 
 #### Code Segment:
@@ -94,7 +94,7 @@ I used **Antigravity (powered by Gemini 3.5 Flash by Google DeepMind)** to pair-
 Initially, the AI-generated code for category representation involved writing individual CSS classes for each category card (`.note-card.study`, `.note-card.work`, etc.) and assigning matching class names during JavaScript rendering. 
 
 **My Modification**:
-I refactored this approach to utilize **CSS Custom Properties (Variables) injected dynamically via JavaScript inline styles** inside `public/script.js`:
+I refactored this approach to utilize **CSS Custom Properties (Variables) injected dynamically via JavaScript inline styles** inside `frontend/js/main.js`:
 ```javascript
 const config = CATEGORY_COLORS[note.category] || CATEGORY_COLORS['General'];
 card.style.setProperty('--cat-color', config.color);
@@ -122,4 +122,4 @@ With another day, I would transition the application to **Server-Side Pagination
     ORDER BY pinned DESC, created_at DESC 
     LIMIT ? OFFSET ?
     ```
-3.  Implement **Infinite Scrolling** or a paginated footer in `public/script.js` to fetch and render new note records dynamically as the user scrolls, conserving browser memory and network bandwidth.
+3.  Implement **Infinite Scrolling** or a paginated footer in `frontend/js/main.js` to fetch and render new note records dynamically as the user scrolls, conserving browser memory and network bandwidth.

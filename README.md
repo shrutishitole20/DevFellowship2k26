@@ -27,17 +27,29 @@ Users can create, edit, delete, search, and organize study notes with a clean an
 
 ```text
 study-notes-app/
-│
-├── server.js
+├── backend/
+│   ├── server.js
+│   └── src/
+│       ├── app/
+│       ├── config/
+│       ├── db/
+│       ├── middleware/
+│       └── notes/
+├── frontend/
+│   ├── index.html
+│   ├── style.css
+│   └── js/
+│       ├── config/
+│       ├── dom/
+│       ├── services/
+│       ├── state/
+│       ├── ui/
+│       ├── utils/
+│       └── main.js
 ├── package.json
 ├── README.md
 ├── ANSWERS.md
-├── database.db
-│
-└── public/
-    ├── index.html
-    ├── style.css
-    └── script.js
+└── database.db
 ```
 
 ---
@@ -74,3 +86,4 @@ http://localhost:3000
 
 ## Author
 Shruti Shitole
+Yuvraj Jagtap
