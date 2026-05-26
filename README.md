@@ -85,5 +85,5 @@ http://localhost:3000
 ---
 
 ## Author
-Shruti Shitole
+Shruti Shitole,
 Yuvraj Jagtap
