@@ -2,9 +2,9 @@
   "name": "study-notes-app",
   "version": "1.0.0",
   "description": "Smart Study Notes Manager - Dev Weekends Fellowship 2026 Assessment Stage",
-  "main": "server.js",
+  "main": "backend/server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node backend/server.js"
   },
   "keywords": [
     "study",
